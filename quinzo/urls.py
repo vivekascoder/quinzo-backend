@@ -11,5 +11,7 @@ urlpatterns = [
     path('question/by_subject/<int:id>', quiz_views.ByQuestion.as_view(), name='by-question'),
     path('subjects', quiz_views.SubjectViews.as_view(), name='subjects'),
     path('papers', quiz_views.PaperViews.as_view(), name='papers'),
+    path('login', quiz_views.LoginView.as_view(), name='login'),
+    path('logout', quiz_views.LogoutView.as_view(), name='logout'),
 ]
 urlpatterns += router.urls

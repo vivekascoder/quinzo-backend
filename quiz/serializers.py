@@ -1,5 +1,7 @@
 from rest_framework import serializers
 from quiz.models import Subject, Question, Paper
+from django.contrib.auth import password_validation
+from rest_framework import validators
 
 
 class SubjectSerializer(serializers.ModelSerializer):
@@ -35,3 +37,6 @@ class QuestionSerializer(serializers.ModelSerializer):
             'option_d': obj.option_d
         }
         
+class LoginSerializer(serializers.Serializer):
+    username = serializers.CharField(required=True)
+    password = serializers.CharField(required=True)
