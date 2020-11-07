@@ -57,7 +57,7 @@ class Quiz(models.Model):
 
 class QuizResult(models.Model):
     quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, blank=True)
     marks = models.PositiveIntegerField(default=0)
     time = models.DateTimeField(auto_now_add=True)
 

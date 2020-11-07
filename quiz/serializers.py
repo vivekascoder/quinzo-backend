@@ -3,6 +3,7 @@ from quiz.models import Subject, Question, Paper, Quiz, QuizResult
 from django.contrib.auth import password_validation
 from rest_framework import validators
 from django.contrib.auth.models import User
+from rest_framework.fields import CurrentUserDefault
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -25,6 +26,15 @@ class UserSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError(e)
         return data
     
+    def create(self, validated_data):
+        return User.objects.create_user(
+            username = validated_data.get('username'),
+            password = validated_data.get('password'),
+            email = validated_data.get('email', ''),
+            first_name = validated_data.get('first_name', ''),
+            last_name = validated_data.get('last_name', '')
+        )
+    
 
         
 class QuizSerializer(serializers.ModelSerializer):
@@ -33,7 +43,15 @@ class QuizSerializer(serializers.ModelSerializer):
         fields = '__all__'
         depth = 1
 
-
+class QuizResultSerializer(serializers.ModelSerializer):
+    # user = serializers.PrimaryKeyRelatedField(read_only=True, default=serializers.CurrentUserDefault())
+    class Meta:
+        model = QuizResult
+        fields = '__all__'
+    
+    def create(self, validated_data):
+        # user = CurrentUserDefault()
+        return QuizResult(**validated_data)
 
 class SubjectSerializer(serializers.ModelSerializer):
     class Meta:

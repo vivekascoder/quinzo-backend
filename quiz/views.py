@@ -18,7 +18,8 @@ from quiz.serializers import (
     QuestionSerializer, SubjectSerializer,
     Paper, PaperSerializer, LoginSerializer,
     UserSerializer, User,
-    Quiz, QuizSerializer
+    Quiz, QuizSerializer, 
+    QuizResultSerializer, QuizResult
 )
 
 class QuestionPage(pagination.BasePagination):
@@ -74,7 +75,7 @@ class LoginView(views.APIView):
                 return Response({'error': "Correct credentials were not provided"}, status=status.HTTP_400_BAD_REQUEST)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-            
+
 
 class LogoutView(views.APIView):
     def get(self, request):
@@ -101,7 +102,24 @@ class QuizView(views.APIView):
         else:
             return Response({'error': 'The Test Does\'t started or has been ended.'}, status=status.HTTP_400_BAD_REQUEST)
         
-        
+class QuizResultView(views.APIView):
+    permission_classes = [permissions.IsAuthenticated]
+    def get(self, request):
+        queryset = QuizResult.objects.all()
+        serializer = QuizResultSerializer(queryset, many=True)
+        return Response(serializer.data)
+
+    def post(self, request):
+        data = dict(request.data)
+        for key, val in data.items():
+            data[key] = val[0]
+        data['user'] = request.user.pk
+        serializer = QuizResultSerializer(data=data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 class TimeView(views.APIView):
     def get(self, request):
         current_time = timezone.now()
