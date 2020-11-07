@@ -102,3 +102,7 @@ class QuizView(views.APIView):
             return Response({'error': 'The Test Does\'t started or has been ended.'}, status=status.HTTP_400_BAD_REQUEST)
         
         
+class TimeView(views.APIView):
+    def get(self, request):
+        current_time = timezone.now()
+        return Response({'time': str(current_time)})

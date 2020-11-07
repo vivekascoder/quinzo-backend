@@ -17,5 +17,6 @@ urlpatterns = [
     path('logout', quiz_views.LogoutView.as_view(), name='logout'),
     path('signup', quiz_views.CreateUserView.as_view(), name='signup'),
     path('test/<int:test_id>', quiz_views.QuizView.as_view(), name='view-test'),
+    path('time', quiz_views.TimeView.as_view(), name='time')
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 urlpatterns += router.urls

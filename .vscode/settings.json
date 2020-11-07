@@ -29,5 +29,7 @@
         "env.bak{,/**}",
         "venv.bak{,/**}",
         ".vscode{,/**}"
-    ]
+    ],
+    "appService.defaultWebAppToDeploy": "/subscriptions/c48bf29f-51c1-4a91-98f7-c6b44239f656/resourceGroups/cloud-shell-storage-centralindia/providers/Microsoft.Web/sites/quinzo",
+    "appService.deploySubpath": "."
 }
