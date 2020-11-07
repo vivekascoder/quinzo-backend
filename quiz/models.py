@@ -1,4 +1,6 @@
 from django.db import models
+from django.contrib.auth.models import User
+
 
 
 class Paper(models.Model):
@@ -34,3 +36,30 @@ class Question(models.Model):
 
     def __str__(self):
         return self.title
+
+
+
+class Quiz(models.Model):
+    title = models.CharField(max_length=100)
+    starting_time = models.DateTimeField()
+    ending_time = models.DateTimeField()
+    questions = models.ManyToManyField(Question)
+
+    def get_total_marks(self):
+        marks = 0
+        for question in self.questions.all():
+            marks += question.marks
+        return marks
+
+    def __str__(self):
+        return self.title
+
+
+class QuizResult(models.Model):
+    quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    marks = models.PositiveIntegerField(default=0)
+    time = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.user.username + self.quiz.title

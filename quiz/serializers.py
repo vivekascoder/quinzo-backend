@@ -1,7 +1,38 @@
 from rest_framework import serializers
-from quiz.models import Subject, Question, Paper
+from quiz.models import Subject, Question, Paper, Quiz, QuizResult
 from django.contrib.auth import password_validation
 from rest_framework import validators
+from django.contrib.auth.models import User
+
+
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = [
+            'username',
+            'password',
+            'email',
+            'first_name',
+            'last_name'
+        ]
+
+    def validate(self, data):
+        if len(data['username']) < 7:
+            raise serializers.ValidationError("The username length should be at least 8.")
+        try:
+            password_validation.validate_password(data['password'])
+        except Exception as e:
+            raise serializers.ValidationError(e)
+        return data
+    
+
+        
+class QuizSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Quiz
+        fields = '__all__'
+        depth = 1
+
 
 
 class SubjectSerializer(serializers.ModelSerializer):
