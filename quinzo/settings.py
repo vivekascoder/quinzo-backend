@@ -72,9 +72,9 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'quinzo-db',
         'HOST': 'quinzo.postgres.database.azure.com',
-        'PASSWORD': '---🖕---',
+        'PASSWORD': 'cbs@54321',
         'PORT': '5432',
-        'USER': 'quinzo@quinzo'
+        'USER': '---🖕---'
     }
 }
 # ---🖕---
