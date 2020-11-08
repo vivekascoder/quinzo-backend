@@ -12,6 +12,7 @@ import django.contrib.auth.password_validation as validators
 from django.contrib.auth import login, logout, authenticate
 from rest_framework.authtoken.models import Token
 from django.contrib.auth.mixins import LoginRequiredMixin
+from rest_framework import parsers
 from django.utils import timezone
 from quiz.serializers import (
     Subject, Question,
@@ -50,6 +51,7 @@ class SubjectViews(ListAPIView):
     queryset = Subject.objects.all()
     serializer_class = SubjectSerializer
     permission_classes = [permissions.IsAuthenticated]
+    parser_classes = [parsers.MultiPartParser]
 
 class PaperViews(ListAPIView):
     queryset = Paper.objects.all()
@@ -124,3 +126,12 @@ class TimeView(views.APIView):
     def get(self, request):
         current_time = timezone.now()
         return Response({'time': str(current_time)})
+
+class SubjectByPaper(views.APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request, paper_id):
+        paper = get_object_or_404(Paper, pk=paper_id)
+        queryset = paper.subject_set.all()
+        serializer = PaperSerializer(queryset, many=True)
+        return Response(serializer.data)

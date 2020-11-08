@@ -12,6 +12,7 @@ class Paper(models.Model):
 class Subject(models.Model):
     name = models.CharField(max_length=100, unique=True)
     paper = models.ForeignKey(Paper, on_delete=models.CASCADE)
+    image = models.ImageField(upload_to='subjects', null=True, blank=True)
     def __str__(self):
         return self.name
 
